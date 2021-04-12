@@ -1,0 +1,64 @@
+[MYSQL]
+mysql_host:
+mysql_user: conf_mysql
+mysql_password:
+mysql_db_bxe_info: bxe_info
+mysql_table: conf_orphaned_pages
+
+sql_select_bxe_info: select * from %(mysql_table)s;
+sql_insert_bxe_info: UPDATE %(mysql_table)s
+                     SET message_sent=1, last_notification="{}"
+                     WHERE space_key = "{}" and page_id = "{}"
+
+[MAIL]
+#smtp_server: bxex.example.local
+#smtp_server:
+smtp_server: localhost
+smtp_port: 25
+smtp_login:
+smtp_password:
+from_addr: confluence@example.de
+subject_first: Please help - an orphaned Confluence page requires 5 minutes of your valuable time!
+subject_reminder: Oh Dear! Confluence does still need your help to remain the beloved documentation tool.
+message_first: Hi!
+
+ Did you ever stumble upon an outdated Confluence page during your search for up-to-date information?
+
+ It wouldn't be surprising - Confluence is the major information sink for nearly everybody in the company, but just a fraction of it is actively maintained by its creator. Many page creators have left the company, others changed their interests or just forgot the information over the years.
+
+ This is were you come in place now :-) In order to keep Confluence up to date we'd kindly ask you for a small contribution.
+
+ Please visit the following Confluence page and take one of the following actions (provided you have sufficient permissions):
+
+ 1. If you are sure the information is obsolete, just delete the page (this will move the page to the Trash only, it can be recovered if still needed).
+ 2. If the information might be still important but doesn't reflect the reality anymore, please update it with fresh information.
+ 3. If you are not sure if the information is up-to-date or required anymore, please label the page with label "review". Pages labelled in that way will be reviewed by the Confluence Gardener Group regularly.
+
+ {}
+
+ Thank you for helping us to keep the system tidy!
+
+
+ --
+ This email was generated automatically and sent to you, because you created or edited this page in the past or because you are member of the Confluence Gardener Group. For feedback and questions regarding this email feel free to contact the COD team via Slack (@ka.cod.team) or via email (cod@example.de)
+
+message_reminder: Hi!
+
+ Some days ago we sent you a link and asked you for reviewing the following Confluence pages
+
+ {}
+
+ Since no one of the people we asked took care meanwhile we'd kindly ask you again spent 5 minutes of your valuable time to make Confuence a little bit better again.
+
+ Please visit the  page(s) and take one of the following actions (provided you have sufficient permissions):
+
+ 1. If you are sure the information is obsolete, just delete the page (this will move the page to the Trash only, it can be recovered if still needed).
+ 2. If the information might be still important but doesn't reflect the reality anymore, please update it with fresh information.
+ 3. If you are not sure if the information is up-to-date or required anymore, please label the page with label "review". Pages labelled in that way will be reviewed by the Confluence Gardener Group regularly.
+
+
+ Thank you for helping us!
+
+
+ --
+ This email was generated automatically and sent to you, because you created or edited this page in the past or because you are member of the Confluence Gardener Group. For feedback and questions regarding this email feel free to contact the COD team via Slack (@ka.cod.team) or via email (cod@example.de)

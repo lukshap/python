@@ -1,0 +1,41 @@
+[MAIL]
+#smtp_server: 
+smtp_server: localhost
+smtp_port: 25
+smtp_login:
+smtp_password:
+to_addr: pavel_luksha@epam.com
+from_addr: 
+subject: Confluence orphaned global spaces (CIA-11)
+message: There are reports attached to this message where you can find the lists of orphaned GLOBAL spaces.
+ We consider global spaces to be unnecessary or orphaned if:
+ 1. the space contains less than 10 pages, excluding pages in trash ("less_10_pages.csv")
+
+ OR
+
+ 2. there were no page edits for the last 6 months ("six_month.csv")
+
+[MYSQL]
+mysql_host: 
+mysql_user: conf_mysql
+mysql_password:
+mysql_db: confdb
+
+sql_six_month: SELECT s.spacekey, cu.lower_display_name creator, cu.lower_email_address creator_email, MAX(c.lastmoddate) last_page_update_date
+              FROM CONTENT c
+              join SPACES s on c.spaceid=s.spaceid
+              join user_mapping um on s.creator=um.user_key
+              LEFT join cwd_user cu on um.lower_username=cu.lower_user_name
+              WHERE s.SPACETYPE='global'
+              GROUP BY s.spacename
+              HAVING last_page_update_date < (CURRENT_DATE() - Interval 6 month);
+
+sql_less_10_pages: SELECT s.spacekey,cu.lower_display_name creator,cu.lower_email_address creator_email, count(c.CONTENTID) as 'number_of_pages'
+              FROM CONTENT c
+              join SPACES s on c.spaceid=s.spaceid
+              join user_mapping um on s.creator=um.user_key
+              LEFT join cwd_user cu on um.lower_username=cu.lower_user_name
+              WHERE s.SPACETYPE='global' and c.CONTENT_STATUS!='deleted' and c.SPACEID is not null and c.PREVVER is null and c.CONTENTTYPE = 'PAGE'
+              GROUP BY s.spacename
+              HAVING number_of_pages < 10;
+

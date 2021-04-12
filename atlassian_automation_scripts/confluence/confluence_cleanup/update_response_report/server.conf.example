@@ -1,0 +1,34 @@
+[MYSQL]
+mysql_host: 10.2.0.245
+mysql_user: conf_mysql
+mysql_password: 
+mysql_db_confdb: confdb
+mysql_db_bxe_info: bxe_info
+mysql_table: conf_orphaned_pages
+
+sql_select_bxe_info: SELECT * from %(mysql_table)s
+                      WHERE message_sent=1;
+
+sql_select_confdb: SELECT lastmoddate
+                    FROM CONTENT
+                    WHERE CONTENTID="{}";
+
+sql_delete_bxe_info: DELETE from %(mysql_table)s
+                      WHERE page_id = {}
+[MAIL]
+gardener_email: dl-confluence-gardeners@booxware.de
+#smtp_server: bxex.booxware.local
+#smtp_server: 10.2.0.172
+smtp_server: localhost
+smtp_port: 25
+smtp_login:
+smtp_password:
+from_addr: confluence@booxware.de
+to_addr: cod@booxware.de,%(gardener_email)s
+#to_addr: pavel_luksha@epam.com
+subject: Confluence Cleanup weekly update response report
+message: Hi!
+ The amount of updated this week pages is {}. Here is the list of the updated pages:
+ {}
+ The amount of non updated this week pages is {}. Here is the list of the non updated pages:
+ {}

@@ -1,0 +1,42 @@
+[MYSQL]
+mysql_host: 10.2.0.245
+mysql_user: conf_mysql
+mysql_password:
+mysql_db_confdb: confdb
+
+sql_select_confdb: SELECT s.spacekey space_key, c.TITLE page_title, c.CONTENTID page_id, CONCAT('https://conf.example.com/pages/viewpage.action?pageId=',c.CONTENTID) page_url, cu.lower_display_name page_creator, cu.active creator_active_flag, cu.lower_email_address page_creator_email
+                    FROM CONTENT c
+                    join SPACES s on c.spaceid=s.spaceid
+                    join user_mapping um on c.creator=um.user_key
+                    LEFT join cwd_user cu on um.lower_username=cu.lower_user_name
+                    join CONTENT_LABEL cl on c.CONTENTID=cl.CONTENTID
+                    join LABEL l on cl.LABELID=l.LABELID
+                    WHERE s.SPACETYPE='global' and s.SPACESTATUS='CURRENT' and c.SPACEID is not null and c.CONTENT_STATUS!='deleted' and c.PREVVER is null and c.CONTENTTYPE = 'PAGE' and (l.name='review' or l.name='doublecheck');
+
+[MAIL]
+gardener_email:
+#smtp_server: bxex.example.local
+smtp_server:
+#smtp_server: localhost
+smtp_port: 25
+smtp_login:
+smtp_password:
+from_addr: confluence@example.de
+to_addr: cod@example.de,%(gardener_email)s
+#to_addr:
+subject: Confluence Cleanup monthly review report
+message: Hi!
+ This is the list of all pages with label "review" OR "doublecheck" in Confluence:
+    <table border="1">
+    <tbody>
+    <tr>
+    <th>space_key</th>
+    <th>page_title</th>
+    <th>page_id</th>
+    <th>page_url</th>
+    <th>page_creator</th>
+    <th>creator_active_flag</th>
+    <th>page_creator_email</th>
+    </tr>
+
+

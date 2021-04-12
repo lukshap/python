@@ -1,0 +1,26 @@
+<h2 style=\"\">Possible indexing statuses</h2>
+<ul class=\"alternate\" style=\"\">
+  <li>
+    <em>Creating changeset &lt;revision&gt; - processing modification &lt;filename&gt;</em>
+    <br/>
+    <em>Creating changeset &lt;revision&gt; - processing addition &lt;filename&gt;</em>
+    <br/>
+    <em>Creating changeset &lt;revision&gt; - processing copy from &lt;branch&gt;/&lt;filename&gt; to &lt;filename&gt;</em>
+    <br/>
+    <strong>Indexing in progress, processing specified revison</strong>
+  </li>
+</ul>
+<ul class=\"alternate\" style=\"\">
+  <li>
+    <em>Expanding paths of changeset &lt;revison&gt;</em>
+    <br/>
+    <strong>Indexing of new a branch (may takes a long time due an <a class=\"external-link\" href=\"https://jira.atlassian.com/browse/FE-3949\" rel=\"nofollow\" style=\"text-decoration: none;\">Atlassian bug</a>)</strong>
+  </li>
+</ul>
+<ul class=\"alternate\" style=\"\">
+  <li>
+    <em>Generated line count data for XXXXXX of YYYYYY file revisions</em>
+    <br/>
+    <strong>Indexing is done, blames calculation still in progress</strong>
+  </li>
+</ul>

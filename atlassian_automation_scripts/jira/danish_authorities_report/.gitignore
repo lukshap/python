@@ -1,0 +1,6 @@
+*.log
+*.conf
+jiraconfig.properties
+sportbet
+licensehelper
+jdk*

@@ -1,0 +1,19 @@
+[GLOBAL]
+scp: scp cod-script-access@10.2.0.242:/var/atlassian/confluence/logs/{} {}
+grep: grep 'doremovepage.action' {} | awk '{}'
+rm: rm -f {}
+
+[MYSQL]
+mysql_host:
+mysql_user: conf_mysql
+mysql_password:
+mysql_db_select: confdb
+mysql_db_insert: bxe_info
+
+sql_select: SELECT s.spacekey, c.TITLE FROM
+            CONTENT c JOIN SPACES s on c.spaceid=s.spaceid
+            WHERE c.CONTENT_STATUS='deleted' and CONTENTID={};
+
+sql_insert: INSERT
+            INTO conf_removed_pages (pageid, page_title, removed_by, removed_date, spacekey)
+            VALUES ("{}", "{}", "{}", "{}", "{}");

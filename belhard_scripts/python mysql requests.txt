@@ -1,0 +1,53 @@
+import yaml
+import mysql.connector
+from mysql.connector import errorcode
+import hashlib
+import random
+# print(y)
+# y=yaml.load("config.yml")
+with open("config.yml") as file:
+    y=yaml.load(file)
+#print(y)
+
+try:
+    con = mysql.connector.connect(user=y['mysql']['login'], password=y['mysql']['password'],host=y['mysql']['host'],autocommit=True)
+    cur = con.cursor()
+    cur.execute("drop database db")
+    cur.execute("create database db")
+    cur.execute("use db")
+    cur.execute("create table users(id int auto_increment primary key, login VARCHAR(60) unique not null,password VARCHAR(90) not null,role tinyint,salt VARCHAR(10) not null)")
+    cur.execute("create table goods(id int auto_increment primary key, name VARCHAR(60) not null,cost double not null,image VARCHAR(20),description VARCHAR(60))")
+    cur.execute("create table orders(id int auto_increment primary key,user_id int ,FOREIGN KEY (user_id) REFERENCES users (id),total_cost double not null)")
+    cur.execute("create table goods_in_orders(orders_id int,goods_id int,FOREIGN KEY (orders_id) REFERENCES orders (id),FOREIGN KEY (goods_id) REFERENCES goods (id), amount int not null)")
+    s='1111'.encode()
+    salt='aaaa'.encode()
+    hash1=hashlib.sha1(salt).hexdigest()
+    hash2=hashlib.sha1(s).hexdigest()
+    password_hash=hashlib.sha1(hash1.encode()+hash2.encode()).hexdigest()
+    #print("INSERT into users (login,password,role,salt) values ('Vasia',{},'0',{})".format(password_hash,salt.decode()))
+
+    cur.execute("INSERT into users (login,password,role,salt) values ('Vasia','{}','0','{}')".format(password_hash,salt.decode()))
+    s='2222'.encode()
+    salt='bbbb'.encode()
+    hash1=hashlib.sha1(salt).hexdigest()
+    hash2=hashlib.sha1(s).hexdigest()
+    password_hash=hashlib.sha1(hash1.encode()+hash2.encode()).hexdigest()
+    cur.execute("INSERT into users (login,password,role,salt) values ('Petia','{}','0','{}')".format(password_hash,salt.decode()))
+
+    cur.execute("INSERT into goods (name,cost,image,description) values ('car','10000','/tmp/1','good big car')")
+    cur.execute("INSERT into goods (name,cost,image,description) values ('map','200','/tmp/2','just map')")
+    cur.execute("INSERT into goods (name,cost,image,description) values ('ball','300','/tmp/3','')")
+    cur.execute("INSERT into goods (name,cost,image,description) values ('bear','6000','/tmp/4','bear')")
+    cur.execute("INSERT into goods (name,cost,image,description) values ('car2','9000','/tmp/5','good small car')")
+
+except mysql.connector.Error as err:
+    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print("Something is wrong with your user name or password")
+    elif err.errno == errorcode.ER_BAD_DB_ERROR:
+        print("Database does not exists")
+    else:
+        print(err)
+else:
+    con.close()
+    print('OK')
+

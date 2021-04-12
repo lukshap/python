@@ -1,0 +1,12 @@
+[CREDENTIALS]
+user:
+password:
+
+[JIRA]
+jira_url: 
+tool_user: 
+role_name: Readonly
+
+[BITBUCKET]
+bitbucket_url: 
+bitbucket_projects_json_url:

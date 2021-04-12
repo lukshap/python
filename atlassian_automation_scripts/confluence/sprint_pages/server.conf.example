@@ -1,0 +1,9 @@
+[GLOBAL]
+user:
+password:
+jira_url: 
+conf_url: 
+bitb_url: 
+bitb_teams_pr: MISC
+bitb_teams_repo: teams_boards
+bitb_teams_file: data.json

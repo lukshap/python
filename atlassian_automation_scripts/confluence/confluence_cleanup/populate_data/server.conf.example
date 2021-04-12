@@ -1,0 +1,33 @@
+[GLOBAL]
+gardener_email:
+
+[MYSQL]
+mysql_host:
+mysql_user: conf_mysql
+mysql_password:
+db_confdb: confdb
+db_bxe_info: bxe_info
+
+sql_select_confdb: SELECT s.spacekey space_key, c.CONTENTID page_id, CONCAT('https://conf.example.com/pages/viewpage.action?pageId=',c.CONTENTID) page_URL , cu.lower_display_name creator, cu.active creator_active, cu.lower_email_address creator_email, cu2.lower_display_name last_editor, cu2.active last_editor_active, cu2.lower_email_address last_editor_email, c.lastmoddate
+                    FROM CONTENT c
+                    join SPACES s on c.spaceid=s.spaceid
+                    join user_mapping um on c.creator=um.user_key
+                    LEFT join cwd_user cu on um.lower_username=cu.lower_user_name
+                    join user_mapping um2 on c.lastmodifier=um2.user_key
+                    LEFT join cwd_user cu2 on um2.lower_username=cu2.lower_user_name
+                    WHERE s.SPACETYPE='global' and s.SPACESTATUS='CURRENT' and c.SPACEID is not null and c.CONTENT_STATUS!='deleted' and c.PREVVER is null and c.CONTENTTYPE = 'PAGE' and c.lastmoddate < (CURRENT_DATE() - Interval 24 month);
+
+sql_select_bxe_info: select * from conf_orphaned_pages;
+
+sql_insert_bxe_info_1: INSERT
+                      INTO conf_orphaned_pages (space_key, page_id, page_URL, creator, last_editor, lastmoddate, email_recipient)
+                      VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}');
+sql_insert_bxe_info_2: INSERT
+                      INTO conf_orphaned_pages (space_key, page_id, page_URL, creator, lastmoddate, email_recipient)
+                      VALUES ('{}', '{}', '{}', '{}', '{}', '{}');
+sql_insert_bxe_info_3: INSERT
+                      INTO conf_orphaned_pages (space_key, page_id, page_URL, last_editor, lastmoddate, email_recipient)
+                      VALUES ('{}', '{}', '{}', '{}', '{}', '{}');
+sql_insert_bxe_info_4: INSERT
+                      INTO conf_orphaned_pages (space_key, page_id, page_URL, lastmoddate, email_recipient)
+                      VALUES ('{}', '{}', '{}', '{}', '{}');
